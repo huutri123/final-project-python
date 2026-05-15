@@ -1,0 +1,35 @@
+from pathlib import Path
+
+# Screen
+FPS = 60
+WIDTH = 1200
+HEIGHT = 720
+
+# Colors
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+GRAY = (128, 128, 128)
+DARK_GRAY = (50, 50, 50)
+
+# Game
+GAME_SPEED = 10
+GRAVITY = 1
+JUMP_VELOCITY = 17
+GROUND_HEIGHT = WIDTH // 2.5
+
+# Dino
+DINO_WIDTH = 50
+DINO_HEIGHT = 50
+DINO_X = 250
+DINO_DUCK1 = (2206, 34, 119, 60)
+DINO_DUCK2 = (2324, 34, 119, 60)
+
+# Obstacles
+OBSTACLE_SPAWN_DELAY = 90  # frames
+CACTUS_WIDTH = 30
+CACTUS_HEIGHT = 50
+BIRD_WIDTH = 40
+BIRD_HEIGHT = 30
+
+# Path
+PATH = Path(__file__).parent.parent.parent
