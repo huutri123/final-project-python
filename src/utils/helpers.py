@@ -1,7 +1,14 @@
 import json
+from pathlib import Path
 
 import pygame
-from src.core.constrant import PATH
+from src.core.constants import PATH
+
+
+DEFAULT_GAME_DATA = {
+    "highscore": "00000",
+    "sound_enabled": True,
+}
 
 
 class ImageUtils:
@@ -38,25 +45,41 @@ class ImageUtils:
         return mask
 
 class Data:
+    DATA_PATH = Path(PATH) / "data" / "game_data.json"
+    LEGACY_HIGHSCORE_PATH = Path(PATH) / "data" / "highscore.json"
+
+    @staticmethod
+    def __read_json(path):
+        try:
+            with path.open("r", encoding="utf-8") as file:
+                return json.load(file)
+        except (FileNotFoundError, json.JSONDecodeError):
+            return None
+
+    @staticmethod
+    def __normalize(data):
+        normalized = DEFAULT_GAME_DATA.copy()
+        if isinstance(data, dict):
+            normalized.update(data)
+        normalized["highscore"] = str(normalized.get("highscore", "00000")).zfill(5)
+        normalized["sound_enabled"] = bool(normalized.get("sound_enabled", True))
+        return normalized
+
     @staticmethod
     def GetData():
-        # Note: Read high score data from the JSON file.
-        try:
-            file = open(str(PATH) + "/data/highscore.json")
-        except FileNotFoundError:
-            print(FileNotFoundError)
-        else:
-            data = json.load(file)
-            file.close()
-            return data
+        # Note: Read game data, falling back to the old high score file.
+        data = Data.__read_json(Data.DATA_PATH)
+        if data is None:
+            data = Data.__read_json(Data.LEGACY_HIGHSCORE_PATH)
+        return Data.__normalize(data)
 
     @staticmethod
     def SaveData(data):
-        # Note: Save high score data back to the JSON file.
-        try:
-            file = open(str(PATH) + "/data/highscore.json")
-        except FileNotFoundError:
-            print(FileNotFoundError)
-        else:
-            json.dump(file,data)
-            file.close()
+        # Note: Save merged game data back to the main JSON file.
+        merged = Data.GetData()
+        if isinstance(data, dict):
+            merged.update(data)
+        merged = Data.__normalize(merged)
+        Data.DATA_PATH.parent.mkdir(parents=True, exist_ok=True)
+        with Data.DATA_PATH.open("w", encoding="utf-8") as file:
+            json.dump(merged, file, indent=2)

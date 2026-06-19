@@ -1,5 +1,5 @@
 import pygame
-from src.core.constrant import PATH
+from src.core.constants import PATH
 
 
 class Font:
