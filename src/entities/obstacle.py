@@ -2,7 +2,7 @@ import random
 
 import pygame.image
 
-from src.core.constrant import (
+from src.core.constants import (
     BIRD_FRAME_1,
     BIRD_FRAME_2,
     BIRD_HIGH_Y,
@@ -56,9 +56,9 @@ class Obstacle:
         if self.__spawn_x - self.x < -self.__obstacle.get_width():
             self.reset()
 
-    def update(self):
+    def update(self, speed=GAME_SPEED):
         # Note: Increasing x makes the obstacle appear to move left.
-        self.x += GAME_SPEED
+        self.x += speed
         if self.__is_bird:
             self.__bird_turn += self.__bird_animation_speed
             if self.__bird_turn >= len(self.__bird_frames):

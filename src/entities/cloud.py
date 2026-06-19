@@ -2,7 +2,7 @@ import random
 
 import pygame.image
 
-from src.core.constrant import (
+from src.core.constants import (
     CLOUD_COUNT,
     CLOUD_FRAME,
     CLOUD_MAX_Y,

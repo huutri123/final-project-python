@@ -1,13 +1,12 @@
 import pygame.image
 
-from src.core.constrant import GAME_SPEED, GROUND_HEIGHT, PATH
+from src.core.constants import GAME_SPEED, GROUND_HEIGHT, PATH
 
 
 class Ground:
     def __init__(self):
         # Note: Load one ground image and draw it twice for endless scrolling.
         self.__ground = pygame.image.load(str(PATH) + "/asset/Image/ground.png")
-        self.__speed = GAME_SPEED
         self.reset()
 
     def reset(self):
@@ -15,10 +14,10 @@ class Ground:
         self.__x1 = 0
         self.__x2 = self.__ground.get_width()
 
-    def update(self):
+    def update(self, speed=GAME_SPEED):
         # Note: Move both ground images left every frame.
-        self.__x1 -= self.__speed
-        self.__x2 -= self.__speed
+        self.__x1 -= speed
+        self.__x2 -= speed
 
         # Note: When one image leaves the screen, place it after the other one.
         if self.__x1 <= -self.__ground.get_width():

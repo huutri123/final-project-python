@@ -1,6 +1,6 @@
 import pygame.image
 
-from src.core.constrant import DINO_DUCK1, DINO_DUCK2, DINO_X, GRAVITY, GROUND_HEIGHT, JUMP_VELOCITY, PATH
+from src.core.constants import DINO_DUCK1, DINO_DUCK2, DINO_X, GRAVITY, GROUND_HEIGHT, JUMP_VELOCITY, PATH
 from src.utils.helpers import ImageUtils
 
 
@@ -40,6 +40,8 @@ class Dino:
         if not self.__is_jumping and not self.__is_ducking:
             self.__is_jumping = True
             self.__y_velocity = JUMP_VELOCITY
+            return True
+        return False
 
     def duck(self, is_ducking):
         # Note: Ducking is controlled by the game input handler.
@@ -85,6 +87,19 @@ class Dino:
     def collision_mask(self):
         # Note: Return the mask for the current animation frame.
         return self.__collision_masks[id(self.__current_image())]
+
+    @property
+    def is_jumping(self):
+        return self.__is_jumping
+
+    @property
+    def feet_position(self):
+        rect = self.collision_rect
+        return rect.centerx, rect.bottom
+
+    @property
+    def center_position(self):
+        return self.collision_rect.center
 
     def draw(self, screen):
         # Note: Draw the current dino frame at its ground or jump position.
